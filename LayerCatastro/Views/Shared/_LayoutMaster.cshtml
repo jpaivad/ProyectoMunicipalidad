@@ -1,26 +1,35 @@
-﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
-
+﻿@using Models
 <!DOCTYPE html>
 <html lang="es">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <title>
-        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
-    </title>
+
+    <title>@ViewBag.Title - Municipalidad de San Isidro</title>
+
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="<%: Url.Content("~/favicon.ico") %>" rel="shortcut icon" type="image/x-icon" />
+    <link href="@Url.Content("~/favicon.ico")" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
+
+    @{
+        Util util = new Util();
+        string path = util.getPath();
+    }
+    <script>
+        var path = '@path';
+    </script>
     <!-- Font Awesome Icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
 
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Content/css/AdminLTE.min.css")
+    @Styles.Render("~/Content/css/skins/_all-skins.min.css")
 
+    <@* Seccion creada para agregar script en la cabecera *@>
+    @RenderSection("ScriptHeader", required: false)
 
-    <%: Styles.Render("~/Content/bootstrap.min.css") %>
-    <%: Styles.Render("~/Content/css/AdminLTE.min.css") %>
-    <%: Styles.Render("~/Content/css/skins/_all-skins.min.css") %>
 </head>
 <body class="fixed sidebar-mini skin-green">
 
@@ -32,7 +41,7 @@
                 <span class="logo-mini"><b>SI</b></span>
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg">
-                    <img src="<%: Url.Content("~/images/logo-san-isidro.png") %>" class="user-image" alt="User Image">
+                    <img src="@Url.Content("~/Content/img/logo-san-isidro.png")" class="user-image" alt="User Image">
                 </span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
@@ -62,7 +71,7 @@
                                                 <!-- start message -->
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                        <img src="@Url.Content("~/Content/img/sinfoto1.png")" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>Support Team
                             <small><i class="fa fa-clock-o"></i>5 mins</small>
@@ -143,16 +152,17 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<%: Url.Content("~/images/imgtemplate/user2-160x160.jpg") %>" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <img src="@Url.Content("~/Content/img/sinfoto1.png")" class="user-image" alt="User Image">
+
+                                <span class="hidden-xs">Alexander Pierce Salinas</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <img src="@Url.Content("~/Content/img/sinfoto1.png")" class="img-circle" alt="User Image">
                                     <p>
                                         Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
+                                        <small>Member since Nov. 2012</small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -191,7 +201,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="<%: Url.Content("~/Images/imgtemplate/user2-160x160.jpg") %>" class="img-circle" alt="User Image" />
+                        <img src="@Url.Content("~/Content/img/sinfoto1.png")" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
                         <p>Alexander Pierce</p>
@@ -229,16 +239,16 @@
                         </ul>
                     </li>
 
-                      <li class="treeview">
+                    <li class="treeview active">
                         <a href="#">
                             <i class="fa fa-dashboard"></i><span>Gestión de Servicios</span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
-                        <%--<ul class="treeview-menu">--%>
+                        <ul class="treeview-menu">
                             <li>
-                                <a href="../../GSMInspeccion"><i class="fa fa-circle-o"></i>Inspección</a>
+                                <a href="@Url.Action("Index", "GSMInspeccion")"><i class="fa fa-circle-o"></i>Inspección</a>
                             </li>
                             <li>
-                                <a href="../../GSMInspeccion"><i class="fa fa-circle-o"></i>Servicio</a>
+                                <a href="@Url.Action("Index", "GSMInspeccion")"><i class="fa fa-circle-o"></i>Servicios</a>
                             </li>
                         </ul>
                     </li>
@@ -263,12 +273,12 @@
         </aside>
 
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="padding-top: 0px;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <asp:ContentPlaceHolder ID="FeaturedContent" runat="server" />
+                @RenderSection("Cabecera", required: false)
                 <section class="content-header">
-                    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                    @RenderBody()
                 </section>
             </section>
         </div>
@@ -283,14 +293,103 @@
     </div>
     <!-- ./wrapper -->
 
-    <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/Scripts/bootstrap.min.js") %>
+    <!--   Globales   -->
 
-    <%: Scripts.Render("~/Scripts/jstemplate/slimScroll/jquery.slimscroll.min.js") %>
-    <%: Scripts.Render("~/Scripts/jstemplate/fastclick/fastclick.min.js") %>
-    <%: Scripts.Render("~/Scripts/jstemplate/app.min.js") %>
-    <%: Scripts.Render("~/Scripts/jstemplate/demo.js") %>
+    <!-- Modal Pregunta OK-CANCEL -->
+    <div class="modal fade" id="ModalConfirm" role="dialog" aria-labelledby="headerConfirm" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 class="modal-title" id="headerConfirmTitle" style="color: #ffffff;">...</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="contact" id="frmEntidadQuitar">
+                        <input type="hidden" id="hidModalId" name="hidModalId" value="0" />
 
-    <asp:ContentPlaceHolder ID="ScriptsSection" runat="server" />
+                        <table>
+                            <tr>
+                                <td id="tdMensajeConfirm">Seguro que desea realizar?<br />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAceptarModalConfirm" onclick="fn_AceptarAlert();">
+                        <span class="glyphicon glyphicon-saved"></span>&nbsp; &nbsp;Aceptar
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>&nbsp; &nbsp;Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Alert -->
+    <div class="modal fade" id="ModalAlert" role="dialog" aria-labelledby="headerAlert" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 class="modal-title" id="ModalAlertTitle" style="color: #ffffff;">...</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="contact" id="frmEntidadQuita1r">
+                        <input type="hidden" id="hidModalAlert" name="hidModalId" value="0" />
+
+                        <table>
+                            <tr>
+                                <td id="tdModalAlert">Seguro que desea realizar?<br />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnAlertCancel" class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>&nbsp; &nbsp;Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Cargando -->
+    <div class="modal fade" id="jqDialogCargando" style="z-index: 7000;" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-vertical-cargando">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel" style="color: #ffffff;">Cargando...</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-1">
+                            <img src="@Url.Content("~/Content/img/cargando0.gif")" alt="" class="img-responsive">
+                        </div>
+                        <div class="col-md-6 col-md-offset-1 col-xs-6 col-xs-offset-1">
+                            <h4 id="txtCargando">Espere un momento....</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Fin Globales -->
+
+
+    <script src="@Url.Content("~/Content/custom/js/jquery-1.11.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstemplate/slimScroll/jquery.slimscroll.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstemplate/fastclick/fastclick.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstemplate/app.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstemplate/demo.js")"></script>
+
+
+
+    @RenderSection("ScriptsSection", required: false)
 </body>
 </html>
